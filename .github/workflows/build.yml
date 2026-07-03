@@ -21,7 +21,6 @@ jobs:
             mv */* . 2>/dev/null || true
             mv */.* . 2>/dev/null || true
           fi
-          # Create a custom, safe cache folder right in the open workspace
           mkdir -p .github/gradle_home
           chmod -R 777 .
 
@@ -29,7 +28,7 @@ jobs:
         env:
           GRADLE_USER_HOME: ${{ github.workspace }}/.github/gradle_home
         run: |
-          gradle wrapper --gradle-version 8.6
+          gradle wrapper --gradle-version 9.3.1
           ./gradlew assembleDebug --no-daemon --no-build-cache --no-configuration-cache
 
       - name: Upload Finished APK
