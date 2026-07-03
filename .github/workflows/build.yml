@@ -8,22 +8,20 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Unzip Project Files
-        run: |
-          unzip Project.zip
-          chmod -R 777 .
-
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           java-version: '17'
-          cache: 'gradle'
 
-      - name: Build Android App
-        uses: kevin-david/android-build-action@v1.4.0
-        with:
-          build-command: ./gradlew assembleDebug
+      - name: Unzip Project Files
+        run: |
+          unzip Project.zip
+          chmod -R 777 .
+
+      - name: Build APK without Cache Conflict
+        run: |
+          ./gradlew assembleDebug --no-daemon --no-build-cache --no-configuration-cache
 
       - name: Upload Finished APK
         uses: actions/upload-artifact@v4
