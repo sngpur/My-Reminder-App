@@ -8,22 +8,20 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Set up JDK 17
+      - name: Set up JDK 11
         uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
-          java-version: '17'
+          java-version: '11'
 
       - name: Extract and Organize Project Files
         run: |
           unzip Project.zip
-          # If files extracted into a subfolder, move them to the root directory
           if [ -d */app ]; then
             mv */* . 2>/dev/null || true
             mv */.* . 2>/dev/null || true
           fi
-          # Ensure a completely fresh gradle wrapper is generated in the right spot
-          gradle wrapper --gradle-version 8.2
+          gradle wrapper --gradle-version 7.5
           chmod -R 777 .
 
       - name: Build APK without Cache Conflict
