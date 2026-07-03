@@ -17,14 +17,14 @@ jobs:
       - name: Unzip Project Files
         run: unzip Project.zip
 
-      - name: Unlock All File Permissions
+      - name: Unlock All Workspace Permissions
         run: chmod -R 777 .
 
       - name: Generate Missing Gradle Wrapper
-        run: gradle wrapper --gradle-version 8.2
+        run: gradle wrapper --gradle-version 8.2 -g ./gradle_cache
 
       - name: Build Debug APK
-        run: ./gradlew assembleDebug --no-daemon
+        run: ./gradlew assembleDebug --no-daemon -g ./gradle_cache --no-configuration-cache
 
       - name: Upload Finished APK
         uses: actions/upload-artifact@v4
