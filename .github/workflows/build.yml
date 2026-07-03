@@ -22,6 +22,11 @@ jobs:
             mv */.* . 2>/dev/null || true
           fi
           mkdir -p .github/gradle_home
+          
+          # Force create the missing debug keystore file so the app signs correctly
+          mkdir -p app
+          keytool -genkey -v -keystore app/debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
+          
           chmod -R 777 .
 
       - name: Build APK without Cache Conflict
