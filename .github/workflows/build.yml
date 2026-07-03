@@ -14,9 +14,16 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
 
-      - name: Unzip Project Files
+      - name: Extract and Organize Project Files
         run: |
           unzip Project.zip
+          # If files extracted into a subfolder, move them to the root directory
+          if [ -d */app ]; then
+            mv */* . 2>/dev/null || true
+            mv */.* . 2>/dev/null || true
+          fi
+          # Ensure a completely fresh gradle wrapper is generated in the right spot
+          gradle wrapper --gradle-version 8.2
           chmod -R 777 .
 
       - name: Build APK without Cache Conflict
@@ -27,4 +34,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: my-app-apk
-          path: app/build/outputs/apk/debug/app-debug.apk
+          path: |
+            app/build/outputs/apk/debug/app-debug.apk
+            **/build/outputs/apk/debug/*.apk
