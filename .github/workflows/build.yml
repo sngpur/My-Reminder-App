@@ -23,7 +23,7 @@ jobs:
           fi
           mkdir -p .github/gradle_home
           
-          # Recreate keystores
+          # Recreate signature files
           keytool -genkey -v -keystore debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
           mkdir -p app
           keytool -genkey -v -keystore app/debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
@@ -35,8 +35,7 @@ jobs:
           GRADLE_USER_HOME: ${{ github.workspace }}/.github/gradle_home
         run: |
           gradle wrapper --gradle-version 9.3.1
-          # Adding -x verifySymbols skips the broken KSP error reporting task
-          ./gradlew assembleDebug --no-daemon --no-build-cache --no-configuration-cache -x verifySymbols
+          ./gradlew assembleDebug --no-daemon --no-build-cache --no-configuration-cache
 
       - name: Upload Finished APK
         uses: actions/upload-artifact@v4
